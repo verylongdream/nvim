@@ -22,42 +22,20 @@ vim.g.vimwiki_list = { {
   ext = ".md",
 } }
 vim.api.nvim_command("autocmd FileType vimwiki autocmd TextChanged,InsertLeave <buffer> silent write")
---vim.api.nvim_del_keymap("i", "<Backspace>")
---Save on ctrl s
--- vim.api.nvim_set_keymap("n", "<C-s>", ":w!<CR>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("i", "<C-s>", "<Esc>:w!<CR>", { noremap = true, silent = true })
---Ctrl Z Undo Ctrl Shift Z redo
--- vim.api.nvim_set_keymap("n", "<C-z>", "u", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "U", "<C-r>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("i", "<C-z>", "<Esc>u", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("i", "<C-S-z>", "<Esc><C-r>", { noremap = true, silent = true })
---ctrl back space to del line
--- vim.api.nvim_set_keymap("i", "<C-BS>", "<C-u>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("n", "<C-BS>", "<C-u>", { noremap = true, silent = true })
---run code via plugin, and open terminal
-vim.api.nvim_set_keymap("n", "<leader>T", ':lua require("run_code").run_code()<CR>', { noremap = true, silent = false })
-vim.api.nvim_set_keymap("n", "<leader>t", ":vsplit | terminal<CR>i", { noremap = true, silent = true })
 
--- Find and replace ctrl f.  word/replaceword
--- vim.api.nvim_set_keymap("n", "<C-f>", ":%s/", { noremap = true, silent = false })
+-- Subtitute same line
+vim.api.nvim_set_keymap("n", "<C-f>", ":s/<C-r><C-w>/", { noremap = true, silent = false })
 
-vim.api.nvim_set_keymap("n", "<C-f>", ":%s/<C-r><C-w>/", { noremap = true, silent = false })
+-- Visual substitute /g /gc for global and c for confirm, global is set permanently in init.lua
+vim.keymap.set("v", "z", [[:s/\%V]], { noremap = true, silent = false })
+
 -- Delete without yanking
 vim.api.nvim_set_keymap("n", "d", '"_d', { noremap = true })
 vim.api.nvim_set_keymap("n", "D", '"_D', { noremap = true })
 vim.api.nvim_set_keymap("n", "dd", '"_dd', { noremap = true })
 vim.api.nvim_set_keymap("v", "d", '"_d', { noremap = true })
-
---vim.api.nvim_set_keymap("n", "P", "o<Esc>p", { noremap = true })
-
--- vim.api.nvim_set_keymap("n", "P", "]:put<CR>", { noremap = true })
-vim.api.nvim_create_user_command("RemindMe", function(args)
-  require("remind_me").remindme(unpack(args.fargs))
-end, { nargs = "+" })
-
-vim.api.nvim_set_keymap("n", "C", ":Calendar<CR>", { noremap = true, silent = true })
-
-vim.keymap.set("n", "P", "o<Esc>p", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "X", 'yy"_dd', { noremap = true })
+vim.api.nvim_set_keymap("n", "x", '"_x', { noremap = true })
 
 vim.keymap.set("n", "<C-Space>", ":ToggleCheckbox<CR>", { noremap = true, silent = true })
 
@@ -66,19 +44,12 @@ vim.api.nvim_create_autocmd("BufRead", {
   command = "normal ;w;i",
 })
 
--- vim.keymap.set("n", "P", "o<Esc>p", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "X", 'yy"_dd', { noremap = true })
-
 vim.api.nvim_set_keymap("n", "-", "$", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("o", "-", "$", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "-", "$", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "0", "^", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("o", "0", "^", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "0", "^", { noremap = true, silent = true })
-
--- Remap for yS
--- vim.api.nvim_set_keymap("n", "yS", "<Plug>YsurroundiW", { noremap = false, silent = true })
--- vim.api.nvim_set_keymap("n", '"', "<Plug>YsurroundiW", { noremap = false, silent = true })
 
 -- Remap for ys
 vim.api.nvim_set_keymap("n", '"', "<Nop>", { noremap = true, silent = true })
@@ -103,56 +74,15 @@ vim.api.nvim_set_keymap("x", "]", "<Plug>VSurround]", { noremap = false, silent 
 -------------------------------------------------------------------------------
 
 vim.api.nvim_set_keymap("n", '"', '<Plug>Ysurroundiw"', { noremap = false, silent = true })
--- vim.api.nvim_set_keymap("n", "{", "<Plug>Ysurroundiw{", { noremap = false, silent = true })
 vim.api.nvim_set_keymap("n", "(", "<Plug>Ysurroundiw(", { noremap = false, silent = true })
 vim.api.nvim_set_keymap("n", "`", "<Plug>YSurroundiw`", { noremap = false, silent = true })
--- vim.api.nvim_set_keymap("n", "[", "<Plug>YSurroundiw[", { noremap = false, silent = true })
 
 --inverses, some add spacing
--- vim.api.nvim_set_keymap("n", "}", "<Plug>YSurroundiw{", { noremap = false, silent = true })
 vim.api.nvim_set_keymap("n", ")", "<Plug>YSurroundiw)", { noremap = false, silent = true })
--- vim.api.nvim_set_keymap("n", "]", "<Plug>YSurroundaw[", { noremap = false, silent = true })
 
 --Debugging step over
 vim.api.nvim_set_keymap("n", "1", ":DapStepOver<CR>", { noremap = true, silent = true })
-
--- Define a namespace for our matches to keep track of them
-local underline_ns = vim.api.nvim_create_namespace("underline")
-
-local function toggle_underline()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  row = row - 1 -- Adjust for 0-indexing
-  local pos = { row, col }
-
-  -- Check for existing underlines
-  local existing = vim.api.nvim_buf_get_extmarks(bufnr, underline_ns, pos, pos, {})
-  if #existing > 0 then
-    -- Remove underline
-    for _, mark in ipairs(existing) do
-      vim.api.nvim_buf_del_extmark(bufnr, underline_ns, mark[1])
-    end
-  else
-    -- Add underline
-    vim.api.nvim_buf_set_extmark(bufnr, underline_ns, row, col, {
-      end_row = row,
-      end_col = col + 1,
-      hl_group = "Underlined",
-      hl_eol = true,
-    })
-  end
-end
-
--- Define the 'Underlined' highlight group
-vim.api.nvim_command("highlight Underlined cterm=underline gui=underline")
-
--- Make the function globally accessible
-_G.toggle_underline = toggle_underline
-
--- Map the 'z' key to the global Lua function
-vim.api.nvim_set_keymap("n", "z", ":lua _G.toggle_underline()<CR>", { noremap = true, silent = true })
----------------
-------------
+vim.api.nvim_set_keymap("n", "2", '<cmd>lua require("dap").restart()<CR>', { noremap = true, silent = true })
 
 --Sets marks to go to specific col number as well as line and adds them to the jump list
 vim.api.nvim_set_keymap("n", "m<key>", ':lua set_mark_extmark("<key>")<CR>', { noremap = true, silent = true })
@@ -160,9 +90,9 @@ vim.api.nvim_set_keymap("n", "gm<key>", ':lua goto_mark_extmark("<key>")<CR>', {
 
 local mark_ns = vim.api.nvim_create_namespace("marks")
 
-vim.api.nvim_set_keymap("n", "<A-l>", ":vertical resize +5<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-p>", ":vertical resize +5<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<A-h>", ":vertical resize -5<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-n>", ":vertical resize -5<CR>", { noremap = true, silent = true })
 
 --Closes buffer and switches to next and leaves split open, do :q to leave split
 vim.cmd([[cnoremap bd :bnext<CR>:bd#<CR>]])
@@ -183,7 +113,7 @@ end
 
 -- Function for normal mode
 function _G.normal_dynamic_surround()
-  -- Enter visual mode, select the word, and call the visual mode function
+  -- ( Enter ) visual mode, select the word, and call the visual mode function
   vim.api.nvim_exec("normal! viw", false)
   -- Use vim.schedule to ensure commands are executed in order
   vim.schedule(_G.visual_dynamic_surround)
@@ -197,3 +127,42 @@ vim.api.nvim_set_keymap("v", "Y[", ":<C-U>lua visual_dynamic_surround()<CR>", { 
 
 -- Map Y[ in normal mode to the normal_dynamic_surround function
 vim.api.nvim_set_keymap("n", "Y[", ":<C-U>lua normal_dynamic_surround()<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>z", ":TmuxJumpFile<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Z", ":TmuxJumpFirst<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "8", "#", { noremap = true })
+-- vim.api.nvim_set_keymap("n", "<S-gt>", "*", { noremap = true })
+
+vim.api.nvim_set_keymap("n", "{", ":keepjumps normal! {<CR>", { silent = true, noremap = true })
+vim.api.nvim_set_keymap("n", "}", ":keepjumps normal! }<CR>", { silent = true, noremap = true })
+
+vim.api.nvim_set_keymap("n", "}", "10j", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "{", "10k", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "t", "<Nop>", { noremap = true, silent = true })
+_G.SimpleInnerPaste = function(char)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("v" .. char, true, false, true), "n", false)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("p", true, false, true), "n", false)
+end
+
+vim.api.nvim_set_keymap("n", "tw", '<cmd>lua _G.SimpleInnerPaste("iw")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", 't"', "<cmd>lua _G.SimpleInnerPaste('i\"')<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "t'", '<cmd>lua _G.SimpleInnerPaste("i\'")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "t)", '<cmd>lua _G.SimpleInnerPaste("i)")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "t]", '<cmd>lua _G.SimpleInnerPaste("i]")<CR>', { noremap = true, silent = true })
+-- vim.keymap.set("n", "gt", "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", {})
+--
+-- vim.keymap.set('n', 'gD', nil)
+vim.keymap.set("n", "gt", function()
+  vim.cmd("vsplit") -- Open a new vertical split window
+  vim.lsp.buf.definition() -- Go to the definition
+end, { silent = true, noremap = true })
+-- Move selected lines with shift+j or shift+k
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+-- vim.keymap.set("n", "[{", function()
+--   vim.cmd("normal! ?{")
+--   vim.cmd("normal! N")
+--   vim.cmd("normal! ^")
+-- end, { noremap = true, silent = true })
