@@ -150,19 +150,20 @@ vim.api.nvim_set_keymap("n", 't"', "<cmd>lua _G.SimpleInnerPaste('i\"')<CR>", { 
 vim.api.nvim_set_keymap("n", "t'", '<cmd>lua _G.SimpleInnerPaste("i\'")<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "t)", '<cmd>lua _G.SimpleInnerPaste("i)")<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "t]", '<cmd>lua _G.SimpleInnerPaste("i]")<CR>', { noremap = true, silent = true })
--- vim.keymap.set("n", "gt", "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", {})
 --
--- vim.keymap.set('n', 'gD', nil)
 vim.keymap.set("n", "gt", function()
   vim.cmd("vsplit") -- Open a new vertical split window
   vim.lsp.buf.definition() -- Go to the definition
 end, { silent = true, noremap = true })
--- Move selected lines with shift+j or shift+k
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
--- vim.keymap.set("n", "[{", function()
---   vim.cmd("normal! ?{")
---   vim.cmd("normal! N")
---   vim.cmd("normal! ^")
--- end, { noremap = true, silent = true })
+--Visual_mode_moveselection
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, noremap = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, noremap = true })
+
+-- vim.keymap.set({ "v", "c", "o", "t" }, "<Space>", "<Esc>", { silent = true, noremap = true })
+
+-- Map 'v' in visual block mode to go back to normal mode
+-- vim.keymap.set("x", "v", "<Esc>", { silent = true, noremap = true })
+
+-- Remap redo to U
+-- vim.keymap.set("n", "U", "<C-r>", { noremap = true })
