@@ -44,9 +44,9 @@ vim.api.nvim_create_autocmd("BufRead", {
   command = "normal ;w;i",
 })
 
-vim.api.nvim_set_keymap("n", "-", "$", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("o", "-", "$", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "-", "$", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "-", "$h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("o", "-", "$h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "-", "$h", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "0", "^", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("o", "0", "^", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "0", "^", { noremap = true, silent = true })
@@ -140,9 +140,21 @@ vim.api.nvim_set_keymap("n", "}", "10j", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "{", "10k", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "t", "<Nop>", { noremap = true, silent = true })
+-- _G.SimpleInnerPaste = function(char)
+--   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("v" .. char, true, false, true), "n", false)
+--   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("p", true, false, true), "n", false)
+-- end
 _G.SimpleInnerPaste = function(char)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("v" .. char, true, false, true), "n", false)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("p", true, false, true), "n", false)
+  -- Save the current contents of the unnamed register
+  local original_content = vim.fn.getreg('"')
+  local original_type = vim.fn.getregtype('"')
+
+  -- Use the black hole register for the delete operation
+  -- Perform the visual selection
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("v" .. char .. '"_dP', true, false, true), "n", false)
+
+  -- Restore the original register content
+  vim.fn.setreg('"', original_content, original_type)
 end
 
 vim.api.nvim_set_keymap("n", "tw", '<cmd>lua _G.SimpleInnerPaste("iw")<CR>', { noremap = true, silent = true })
@@ -166,4 +178,5 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, noremap = true })
 -- vim.keymap.set("x", "v", "<Esc>", { silent = true, noremap = true })
 
 -- Remap redo to U
--- vim.keymap.set("n", "U", "<C-r>", { noremap = true })
+vim.keymap.set("n", "U", "<C-r>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<BS>", ":q<CR>", { noremap = true, silent = true })
