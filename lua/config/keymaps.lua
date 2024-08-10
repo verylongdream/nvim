@@ -3,7 +3,7 @@
 require("config.lazy")
 keymap = vim.api.nvim_set_keymap
 keymap("i", "jk", "<Esc>", { noremap = true, silent = true }) -- Add valid options
-keymap("n", "<leader>wc", ":e ~/.config/nvim<CR>", { noremap = true, silent = true })
+keymap("n", "<leader>wc", ":e ~/.config/nvim/lua<CR>", { noremap = true, silent = true })
 keymap("n", "`a", "'a", { noremap = true, silent = true })
 keymap("n", "'a", "`a", { noremap = true, silent = true })
 
@@ -81,21 +81,16 @@ vim.api.nvim_set_keymap("n", "`", "<Plug>YSurroundiw`", { noremap = false, silen
 vim.api.nvim_set_keymap("n", ")", "<Plug>YSurroundiw)", { noremap = false, silent = true })
 
 --Debugging step over
-vim.api.nvim_set_keymap("n", "1", ":DapStepOver<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "2", '<cmd>lua require("dap").restart()<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "1", ":DapStepOver<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "2", '<cmd>lua require("dap").restart()<CR>', { noremap = true, silent = true })
 
 --Sets marks to go to specific col number as well as line and adds them to the jump list
-vim.api.nvim_set_keymap("n", "m<key>", ':lua set_mark_extmark("<key>")<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "gm<key>", ':lua goto_mark_extmark("<key>")<CR>', { noremap = true, silent = true })
-
-local mark_ns = vim.api.nvim_create_namespace("marks")
+-- vim.api.nvim_set_keymap("n", "m<key>", ':lua set_mark_extmark("<key>")<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "gm<key>", ':lua goto_mark_extmark("<key>")<CR>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<A-p>", ":vertical resize +5<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<A-n>", ":vertical resize -5<CR>", { noremap = true, silent = true })
-
---Closes buffer and switches to next and leaves split open, do :q to leave split
-vim.cmd([[cnoremap bd :bnext<CR>:bd#<CR>]])
 
 --WRAPPING FOR foo[bar] as Y[ , maybe later make it more dynamic like just make it Y then whatever you want to surround, {, etc more general for funcs
 function _G.visual_dynamic_surround()
@@ -128,22 +123,16 @@ vim.api.nvim_set_keymap("v", "Y[", ":<C-U>lua visual_dynamic_surround()<CR>", { 
 -- Map Y[ in normal mode to the normal_dynamic_surround function
 vim.api.nvim_set_keymap("n", "Y[", ":<C-U>lua normal_dynamic_surround()<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<leader>z", ":TmuxJumpFile<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Z", ":TmuxJumpFirst<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "8", "#", { noremap = true })
 -- vim.api.nvim_set_keymap("n", "<S-gt>", "*", { noremap = true })
 
 vim.api.nvim_set_keymap("n", "{", ":keepjumps normal! {<CR>", { silent = true, noremap = true })
 vim.api.nvim_set_keymap("n", "}", ":keepjumps normal! }<CR>", { silent = true, noremap = true })
 
-vim.api.nvim_set_keymap("n", "}", "10j", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "{", "10k", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "}", "16j", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "{", "16k", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "t", "<Nop>", { noremap = true, silent = true })
--- _G.SimpleInnerPaste = function(char)
---   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("v" .. char, true, false, true), "n", false)
---   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("p", true, false, true), "n", false)
--- end
+
 _G.SimpleInnerPaste = function(char)
   -- Save the current contents of the unnamed register
   local original_content = vim.fn.getreg('"')
@@ -162,6 +151,7 @@ vim.api.nvim_set_keymap("n", 't"', "<cmd>lua _G.SimpleInnerPaste('i\"')<CR>", { 
 vim.api.nvim_set_keymap("n", "t'", '<cmd>lua _G.SimpleInnerPaste("i\'")<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "t)", '<cmd>lua _G.SimpleInnerPaste("i)")<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "t]", '<cmd>lua _G.SimpleInnerPaste("i]")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "t}", '<cmd>lua _G.SimpleInnerPaste("i}")<CR>', { noremap = true, silent = true })
 --
 vim.keymap.set("n", "gt", function()
   vim.cmd("vsplit") -- Open a new vertical split window
@@ -172,11 +162,13 @@ end, { silent = true, noremap = true })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, noremap = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, noremap = true })
 
--- vim.keymap.set({ "v", "c", "o", "t" }, "<Space>", "<Esc>", { silent = true, noremap = true })
-
 -- Map 'v' in visual block mode to go back to normal mode
--- vim.keymap.set("x", "v", "<Esc>", { silent = true, noremap = true })
+vim.keymap.set("x", "v", "<Esc>", { silent = true, noremap = true })
 
 -- Remap redo to U
 vim.keymap.set("n", "U", "<C-r>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<BS>", ":q<CR>", { noremap = true, silent = true })
+
+-- vim.api.nvim_set_keymap("n", "s", ":HopVertical<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "s", ":HopWord<CR>", { noremap = true, silent = true })
+-- place this in one of your configuration file(s)

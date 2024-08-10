@@ -9,5 +9,6 @@ vim.o.tabline = "%f"
 vim.opt.swapfile = false
 vim.opt.smartindent = true
 -- vim.opt.scrolloff = 9999
--- vim.opt.errorformat = "%f\\(%l\\,%c\\): error %trror TS%n: %m"
-vim.opt.makeprg = "npm run build"
+-- ??vim.opt.errorformat = "errorformat=%+A\ %#%f\ %#(%l\\\,%c):\ %m,%C%m"
+
+vim.opt.scrolloff = 35
